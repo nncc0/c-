@@ -1,0 +1,64 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            Console.Write("Enter minNumber: ");
+            int minNumber = int.Parse(Console.ReadLine());
+            Console.Write("Enter maxNumber: ");
+            int maxNumber = int.Parse(Console.ReadLine());
+
+            // Validate input
+            if (minNumber >= maxNumber)
+            {
+                Console.WriteLine("Invalid input. minNumber should be less than maxNumber.");
+                return;
+            }
+
+            // Define the range and create a two-dimensional array for numbers and their frequencies
+            int range = maxNumber - minNumber + 1;
+            int[,] frequencyArray = new int[range, 2];
+
+            // Initialize the frequency array
+            for (int i = 0; i < range; i++)
+            {
+                frequencyArray[i, 0] = minNumber + i; // Assign each number in the range
+                frequencyArray[i, 1] = 0; // Initialize frequency to 0
+            }
+
+            // Create a Random object to generate random numbers
+            Random rand = new Random();
+            int totalNumbers = 1000;
+
+            // Generate random numbers and count their occurrences
+            for (int i = 0; i < totalNumbers; i++)
+            {
+                int randomNum = rand.Next(minNumber, maxNumber + 1);
+                try
+                {
+                    int index = randomNum - minNumber;
+                    frequencyArray[index, 1]++;
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    Console.WriteLine("Error: Index out of range. Please check the range of numbers.");
+                    return;
+                }
+            }
+
+            // Display the frequency table
+            Console.WriteLine("\nNumber\tFrequency");
+            for (int i = 0; i < range; i++)
+            {
+                Console.WriteLine($"{frequencyArray[i, 0]}\t{frequencyArray[i, 1]}");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Invalid input. Please enter valid integers for minNumber and maxNumber.");
+        }
+    }
+}
